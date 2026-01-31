@@ -6,6 +6,5 @@ class BankBackendApplicationTests {
 
     @Test
     void smokeTest() {
-        // smoke test: evita levantar el contexto de Spring mientras no haya datasource configurado
     }
 }
