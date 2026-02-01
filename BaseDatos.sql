@@ -25,6 +25,7 @@ CREATE TABLE IF NOT EXISTS cuenta (
   numero_cuenta VARCHAR(30) PRIMARY KEY,
   tipo_cuenta VARCHAR(30) NOT NULL,
   saldo_inicial NUMERIC(14,2) NOT NULL CHECK (saldo_inicial >= 0),
+  saldo_disponible NUMERIC(14,2) NOT NULL,
   estado BOOLEAN NOT NULL,
   cliente_id BIGINT NOT NULL,
   CONSTRAINT fk_cuenta_cliente

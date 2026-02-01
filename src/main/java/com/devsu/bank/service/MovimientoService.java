@@ -40,7 +40,7 @@ public class MovimientoService {
         // Guardamos el movimiento
         Movimiento saved = movimientoRepository.save(movimiento);
 
-        cuenta.setSaldoInicial(saved.getSaldo());
+        cuenta.setSaldoDisponible(saved.getSaldo());
         cuentaRepository.save(cuenta);
 
         // Convertimos Entity -> DTO

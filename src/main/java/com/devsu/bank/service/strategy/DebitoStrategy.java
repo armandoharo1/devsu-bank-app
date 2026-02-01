@@ -34,8 +34,8 @@ public class DebitoStrategy implements MovimientoStrategy {
             throw new BusinessException("Cupo diario Excedido");
         }
 
-        // (2) Saldo actual: por ahora (temporal) usaremos saldoInicial
-        BigDecimal saldoActual = cuenta.getSaldoInicial();
+        // (2) Saldo actual
+        BigDecimal saldoActual = cuenta.getSaldoDisponible();
 
         if (saldoActual.compareTo(BigDecimal.ZERO) == 0 || saldoActual.compareTo(retiro) < 0) {
             throw new BusinessException("Saldo no disponible");

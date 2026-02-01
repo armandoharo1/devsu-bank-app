@@ -33,6 +33,7 @@ public class CuentaService {
                 .numeroCuenta(req.numeroCuenta())
                 .tipoCuenta(req.tipoCuenta())
                 .saldoInicial(req.saldoInicial())
+                .saldoDisponible(req.saldoInicial())
                 .estado(req.estado())
                 .cliente(cliente)
                 .build();

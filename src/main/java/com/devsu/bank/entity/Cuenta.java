@@ -30,6 +30,11 @@ public class Cuenta {
     private BigDecimal saldoInicial;
 
     @NotNull
+    @PositiveOrZero
+    @Column(name = "saldo_disponible", nullable = false, precision = 14, scale = 2)
+    private BigDecimal saldoDisponible;
+
+    @NotNull
     @Column(nullable = false)
     private Boolean estado;
 

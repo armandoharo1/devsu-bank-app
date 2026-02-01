@@ -15,7 +15,7 @@ public class CreditoStrategy implements MovimientoStrategy {
 
     @Override
     public Movimiento apply(Cuenta cuenta, BigDecimal valor, LocalDate fecha) {
-        BigDecimal saldoActual = cuenta.getSaldoInicial();
+        BigDecimal saldoActual = cuenta.getSaldoDisponible();
         BigDecimal nuevoSaldo = saldoActual.add(valor.abs());
 
         return Movimiento.builder()
