@@ -10,15 +10,25 @@ import java.time.LocalDate;
 import java.util.List;
 
 @RestController
-@RequestMapping("/reportes")
 @RequiredArgsConstructor
 public class ReporteController {
 
     private final ReporteService reporteService;
 
-    @GetMapping
+    // Opción A: query params
+    @GetMapping("/reportes")
     public List<ReporteMovimientoResponse> reporte(
             @RequestParam Long clienteId,
+            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fechaInicio,
+            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fechaFin
+    ) {
+        return reporteService.reporte(clienteId, fechaInicio, fechaFin);
+    }
+
+    // Opción B: path + query
+    @GetMapping("/clientes/{clienteId}/reportes")
+    public List<ReporteMovimientoResponse> reportePorCliente(
+            @PathVariable Long clienteId,
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fechaInicio,
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fechaFin
     ) {
