@@ -22,7 +22,7 @@ public class ClienteService {
         if (clienteRepository.existsByIdentificacion(req.identificacion())) {
             throw new BusinessException("Identificación ya existe");
         }
-        if (clienteRepository.existsByClientId(req.clientKey())) { // ✅ usa existsByClientId
+        if (clienteRepository.existsByClientId(req.clientKey())) {
             throw new BusinessException("ClientKey ya existe");
         }
 
@@ -37,8 +37,8 @@ public class ClienteService {
         cliente.setTelefono(req.telefono());
 
         // Cliente (propio)
-        cliente.setClientId(req.clientKey());      // ✅ DTO clientKey -> Entity clientId
-        cliente.setContrasena(req.password());     // ✅ DTO password -> Entity contrasena
+        cliente.setClientId(req.clientKey());
+        cliente.setContrasena(req.password());
         cliente.setEstado(req.estado());
 
         Cliente saved = clienteRepository.save(cliente);
@@ -78,8 +78,6 @@ public class ClienteService {
 
     private ClienteResponse toResponse(Cliente c) {
         return new ClienteResponse(
-                //c.getPersonaId(),
-                // id heredado de Persona (PK)
                 c.getId(),
                 c.getNombre(),
                 c.getGenero(),
@@ -87,7 +85,7 @@ public class ClienteService {
                 c.getIdentificacion(),
                 c.getDireccion(),
                 c.getTelefono(),
-                c.getClientId(),   // ✅ Entity clientId -> DTO clientKey
+                c.getClientId(),
                 c.getEstado()
         );
     }

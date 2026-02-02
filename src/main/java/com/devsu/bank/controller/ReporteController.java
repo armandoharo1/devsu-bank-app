@@ -1,13 +1,14 @@
 package com.devsu.bank.controller;
 
-import com.devsu.bank.dto.ReporteMovimientoResponse;
+import com.devsu.bank.dto.ReporteEstadoCuentaResponse;
 import com.devsu.bank.service.ReporteService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
-import java.util.List;
+
+import com.devsu.bank.dto.ReporteEstadoCuentaPdfResponse;
 
 @RestController
 @RequiredArgsConstructor
@@ -17,7 +18,7 @@ public class ReporteController {
 
     // Opción A: query params
     @GetMapping("/reportes")
-    public List<ReporteMovimientoResponse> reporte(
+    public ReporteEstadoCuentaResponse reporte(
             @RequestParam Long clienteId,
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fechaInicio,
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fechaFin
@@ -27,11 +28,21 @@ public class ReporteController {
 
     // Opción B: path + query
     @GetMapping("/clientes/{clienteId}/reportes")
-    public List<ReporteMovimientoResponse> reportePorCliente(
+    public ReporteEstadoCuentaResponse reportePorCliente(
             @PathVariable Long clienteId,
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fechaInicio,
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fechaFin
     ) {
         return reporteService.reporte(clienteId, fechaInicio, fechaFin);
+    }
+
+
+    @GetMapping("/clientes/{clienteId}/reportes/pdf")
+    public ReporteEstadoCuentaPdfResponse reportePdfPorCliente(
+            @PathVariable Long clienteId,
+            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fechaInicio,
+            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fechaFin
+    ) {
+        return reporteService.reportePdf(clienteId, fechaInicio, fechaFin);
     }
 }

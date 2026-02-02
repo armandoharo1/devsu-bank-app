@@ -48,7 +48,7 @@ public class MovimientoService {
         cuenta.setSaldoDisponible(saved.getSaldo());
         cuentaRepository.save(cuenta);
 
-        // Convertimos Entity -> DTO
+        // Convertimos Entity a DTO
         return new MovimientoResponse(
                 getMovimientoId(saved),
                 saved.getFecha(),
@@ -118,7 +118,7 @@ public class MovimientoService {
 
         recalcularSaldos(numeroCuenta);
 
-        // re leer para retornar saldo ya recalculado
+        // releer para retornar saldo ya recalculado
         Movimiento actualizado = movimientoRepository.findById(id)
                 .orElseThrow(() -> new BusinessException("Movimiento no encontrado"));
 

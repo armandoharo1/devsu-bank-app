@@ -23,7 +23,7 @@ public class DebitoStrategy implements MovimientoStrategy {
     public Movimiento apply(Cuenta cuenta, BigDecimal valor, LocalDate fecha) {
         BigDecimal retiro = valor.abs();
 
-        // (1) Cupo diario: suma de débitos del día (valor negativo guardado luego)
+        // Cupo diario: suma de débitos del día, valor negativo guardado luego
         BigDecimal consumidoHoy = movimientoRepository
                 .findByCuentaAndTipoMovimientoAndFecha(cuenta, TipoMovimiento.DEBITO, fecha)
                 .stream()
@@ -34,7 +34,7 @@ public class DebitoStrategy implements MovimientoStrategy {
             throw new BusinessException("Cupo diario Excedido");
         }
 
-        // (2) Saldo actual
+        // Saldo actual
         BigDecimal saldoActual = cuenta.getSaldoDisponible();
 
         if (saldoActual.compareTo(BigDecimal.ZERO) == 0 || saldoActual.compareTo(retiro) < 0) {
@@ -46,7 +46,7 @@ public class DebitoStrategy implements MovimientoStrategy {
         return Movimiento.builder()
                 .fecha(fecha)
                 .tipoMovimiento(TipoMovimiento.DEBITO)
-                .valor(retiro.negate()) // negativo
+                .valor(retiro.negate())
                 .saldo(nuevoSaldo)
                 .cuenta(cuenta)
                 .build();
