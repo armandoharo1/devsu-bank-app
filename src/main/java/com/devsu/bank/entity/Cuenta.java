@@ -16,7 +16,8 @@ import java.math.BigDecimal;
 public class Cuenta {
 
     @Id
-    @Column(name = "numero_cuenta", length = 30)
+    @NotBlank
+    @Column(name = "numero_cuenta", length = 30, nullable = false)
     private String numeroCuenta;
 
     @NotBlank

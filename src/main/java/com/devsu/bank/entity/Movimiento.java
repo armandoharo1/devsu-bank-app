@@ -22,7 +22,7 @@ public class Movimiento {
     private Long id;
 
     @NotNull
-    @Column(nullable = false)
+    @Column(name = "fecha", nullable = false)
     private LocalDate fecha;
 
     @NotNull
@@ -31,11 +31,11 @@ public class Movimiento {
     private TipoMovimiento tipoMovimiento;
 
     @NotNull
-    @Column(nullable = false, precision = 14, scale = 2)
+    @Column(name = "valor", nullable = false, precision = 14, scale = 2)
     private BigDecimal valor; // +credito, -debito (lo normalizaremos en servicio)
 
     @NotNull
-    @Column(nullable = false, precision = 14, scale = 2)
+    @Column(name = "saldo", nullable = false, precision = 14, scale = 2)
     private BigDecimal saldo; // saldo resultante luego del movimiento
 
     @NotNull

@@ -12,6 +12,7 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 @Entity
 @Table(name = "cliente")
+@PrimaryKeyJoinColumn(name = "cliente_id")
 public class Cliente extends Persona {
 
     @NotBlank
