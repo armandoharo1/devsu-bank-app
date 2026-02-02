@@ -1,9 +1,12 @@
 package com.devsu.bank.service;
 
 import com.devsu.bank.dto.MovimientoCreateRequest;
+import com.devsu.bank.dto.MovimientoDetailResponse;
 import com.devsu.bank.dto.MovimientoResponse;
+import com.devsu.bank.dto.MovimientoUpdateRequest;
 import com.devsu.bank.entity.Cuenta;
 import com.devsu.bank.entity.Movimiento;
+import com.devsu.bank.entity.TipoMovimiento;
 import com.devsu.bank.exception.BusinessException;
 import com.devsu.bank.repository.CuentaRepository;
 import com.devsu.bank.repository.MovimientoRepository;
@@ -13,7 +16,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -57,4 +62,85 @@ public class MovimientoService {
     private Long getMovimientoId(Movimiento m) {
         return m.getId();
     }
+
+    private void recalcularSaldos(String numeroCuenta) {
+        Cuenta cuenta = cuentaRepository.findById(numeroCuenta)
+                .orElseThrow(() -> new BusinessException("Cuenta no encontrada"));
+
+        BigDecimal saldo = cuenta.getSaldoInicial();
+
+        List<Movimiento> movimientos = movimientoRepository
+                .findByCuenta_NumeroCuentaOrderByFechaAscIdAsc(numeroCuenta);
+
+        for (Movimiento m : movimientos) {
+            BigDecimal valor = m.getValor();
+            saldo = saldo.add(valor);
+            m.setSaldo(saldo);
+        }
+
+        movimientoRepository.saveAll(movimientos);
+
+        cuenta.setSaldoDisponible(saldo);
+        cuentaRepository.save(cuenta);
+    }
+
+
+    public MovimientoDetailResponse getById(Long id) {
+        Movimiento mov = movimientoRepository.findById(id)
+                .orElseThrow(() -> new BusinessException("Movimiento no encontrado"));
+
+        return new MovimientoDetailResponse(
+                mov.getId(),
+                mov.getFecha(),
+                mov.getTipoMovimiento().name(),
+                mov.getValor(),
+                mov.getSaldo(),
+                mov.getCuenta().getNumeroCuenta()
+        );
+    }
+
+    @Transactional
+    public MovimientoDetailResponse update(Long id, MovimientoUpdateRequest req) {
+        Movimiento mov = movimientoRepository.findById(id)
+                .orElseThrow(() -> new BusinessException("Movimiento no encontrado"));
+
+        String numeroCuenta = mov.getCuenta().getNumeroCuenta();
+
+        mov.setFecha(req.fecha());
+        mov.setTipoMovimiento(req.tipoMovimiento());
+
+        BigDecimal valor = req.valor();
+        if (req.tipoMovimiento() == TipoMovimiento.DEBITO && valor.signum() > 0) valor = valor.negate();
+        if (req.tipoMovimiento() == TipoMovimiento.CREDITO && valor.signum() < 0) valor = valor.abs();
+        mov.setValor(valor);
+
+        movimientoRepository.save(mov);
+
+        recalcularSaldos(numeroCuenta);
+
+        // re leer para retornar saldo ya recalculado
+        Movimiento actualizado = movimientoRepository.findById(id)
+                .orElseThrow(() -> new BusinessException("Movimiento no encontrado"));
+
+        return new MovimientoDetailResponse(
+                actualizado.getId(),
+                actualizado.getFecha(),
+                actualizado.getTipoMovimiento().name(),
+                actualizado.getValor(),
+                actualizado.getSaldo(),
+                actualizado.getCuenta().getNumeroCuenta()
+        );
+    }
+
+    @Transactional
+    public void delete(Long id) {
+        Movimiento mov = movimientoRepository.findById(id)
+                .orElseThrow(() -> new BusinessException("Movimiento no encontrado"));
+        String numeroCuenta = mov.getCuenta().getNumeroCuenta();
+
+        movimientoRepository.delete(mov);
+
+        recalcularSaldos(numeroCuenta);
+    }
+
 }

@@ -38,4 +38,6 @@ public interface MovimientoRepository extends JpaRepository<Movimiento, Long> {
             @Param("fechaInicio") LocalDate fechaInicio,
             @Param("fechaFin") LocalDate fechaFin
     );
+
+    List<Movimiento> findByCuenta_NumeroCuentaOrderByFechaAscIdAsc(String numeroCuenta);
 }
