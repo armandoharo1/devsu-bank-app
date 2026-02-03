@@ -35,4 +35,14 @@ public class CuentaController {
     public void eliminar(@PathVariable String numeroCuenta) {
         cuentaService.eliminar(numeroCuenta);
     }
+
+    @GetMapping
+    public java.util.List<CuentaResponse> listar() {
+        return cuentaService.listar();
+    }
+
+    @GetMapping("/cliente/{clienteId}")
+    public java.util.List<CuentaResponse> listarPorCliente(@PathVariable Long clienteId) {
+        return cuentaService.listarPorCliente(clienteId);
+    }
 }

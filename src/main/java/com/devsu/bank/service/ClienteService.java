@@ -89,4 +89,12 @@ public class ClienteService {
                 c.getEstado()
         );
     }
+
+    @Transactional(readOnly = true)
+    public java.util.List<ClienteResponse> listar() {
+        return clienteRepository.findAll()
+                .stream()
+                .map(this::toResponse)
+                .toList();
+    }
 }

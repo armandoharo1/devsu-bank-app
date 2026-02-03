@@ -143,4 +143,32 @@ public class MovimientoService {
         recalcularSaldos(numeroCuenta);
     }
 
+
+    @Transactional(readOnly = true)
+    public List<MovimientoResponse> listar() {
+        return movimientoRepository.findAll()
+                .stream()
+                .map(this::toResponse)
+                .toList();
+    }
+
+    @Transactional(readOnly = true)
+    public List<MovimientoResponse> listarPorCuenta(String numeroCuenta) {
+        return movimientoRepository.findByCuenta_NumeroCuenta(numeroCuenta)
+                .stream()
+                .map(this::toResponse)
+                .toList();
+    }
+
+    private MovimientoResponse toResponse(Movimiento m) {
+        return new MovimientoResponse(
+                m.getId(),
+                m.getFecha(),
+                m.getTipoMovimiento().name(),
+                m.getValor(),
+                m.getSaldo(),
+                m.getCuenta().getNumeroCuenta()
+        );
+    }
+
 }

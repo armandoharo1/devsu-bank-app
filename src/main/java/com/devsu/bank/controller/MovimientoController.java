@@ -44,4 +44,14 @@ public class MovimientoController {
         return ResponseEntity.noContent().build();
     }
 
+    @GetMapping
+    public java.util.List<MovimientoResponse> listar() {
+        return movimientoService.listar();
+    }
+
+    @GetMapping("/cuenta/{numeroCuenta}")
+    public java.util.List<MovimientoResponse> listarPorCuenta(@PathVariable String numeroCuenta) {
+        return movimientoService.listarPorCuenta(numeroCuenta);
+    }
+
 }

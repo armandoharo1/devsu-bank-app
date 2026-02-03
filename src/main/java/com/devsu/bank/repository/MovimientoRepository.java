@@ -40,4 +40,6 @@ public interface MovimientoRepository extends JpaRepository<Movimiento, Long> {
     );
 
     List<Movimiento> findByCuenta_NumeroCuentaOrderByFechaAscIdAsc(String numeroCuenta);
+
+    List<Movimiento> findByCuenta_NumeroCuenta(String numeroCuenta);
 }

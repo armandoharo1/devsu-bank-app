@@ -12,6 +12,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class CuentaService {
@@ -78,5 +80,22 @@ public class CuentaService {
                 c.getEstado(),
                 c.getCliente().getId()
         );
+    }
+
+
+    @Transactional(readOnly = true)
+    public List<CuentaResponse> listar() {
+        return cuentaRepository.findAll()
+                .stream()
+                .map(this::toResponse)
+                .toList();
+    }
+
+    @Transactional(readOnly = true)
+    public List<CuentaResponse> listarPorCliente(Long clienteId) {
+        return cuentaRepository.findByCliente_Id(clienteId)
+                .stream()
+                .map(this::toResponse)
+                .toList();
     }
 }

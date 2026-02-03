@@ -35,4 +35,9 @@ public class ClienteController {
     public void eliminar(@PathVariable Long id) {
         clienteService.eliminar(id);
     }
+
+    @GetMapping
+    public java.util.List<ClienteResponse> listar() {
+        return clienteService.listar();
+    }
 }
