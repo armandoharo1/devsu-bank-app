@@ -44,7 +44,7 @@ public class ReporteService {
                 .filter(v -> v != null && v.signum() > 0)
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
 
-        // aqui Lo devolvemos en positivo, más entendible para total débitos
+        // aqui devolvemos en positivo, basicamnte para que sea más entendible para total débitos
         BigDecimal totalDebitos = data.stream()
                 .map(ReporteMovimientoResponse::movimiento)
                 .filter(v -> v != null && v.signum() < 0)
@@ -64,7 +64,7 @@ public class ReporteService {
 
     @Transactional(readOnly = true)
     public ReporteEstadoCuentaPdfResponse reportePdf(Long clienteId, LocalDate fechaInicio, LocalDate fechaFin) {
-        // aqui reutiliza el reporte JSON ya armado con totales
+        // aqui s reutiliza el reporte JSON ya armado con totales
         var reporte = reporte(clienteId, fechaInicio, fechaFin);
 
         byte[] pdfBytes = ReportePdfGenerator.generar(reporte);

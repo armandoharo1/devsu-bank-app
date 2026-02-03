@@ -1,12 +1,12 @@
 BEGIN;
 
--- Limpieza (orden por dependencias)
+-- Limpieza
 DROP TABLE IF EXISTS movimiento;
 DROP TABLE IF EXISTS cuenta;
 DROP TABLE IF EXISTS cliente;
 DROP TABLE IF EXISTS persona;
 
--- 1) PERSONA
+-- 1. PERSONA
 -- Mapea a: Persona.java  (Inheritance JOINED)
 CREATE TABLE persona (
   persona_id      BIGSERIAL PRIMARY KEY,
@@ -18,7 +18,7 @@ CREATE TABLE persona (
   telefono        VARCHAR(30)  NOT NULL
 );
 
--- 2) CLIENTE (JOINED: PK=FK hacia persona)
+-- 2. CLIENTE (JOINED: PK=FK hacia persona)
 -- Mapea a: Cliente.java (@PrimaryKeyJoinColumn(name="cliente_id"))
 CREATE TABLE cliente (
   cliente_id     BIGINT PRIMARY KEY,
@@ -30,8 +30,8 @@ CREATE TABLE cliente (
     ON DELETE CASCADE
 );
 
--- 3) CUENTA
--- Mapea a: Cuenta.java (PK numero_cuenta) + FK cuenta.cliente_id -> cliente.cliente_id
+-- 3. CUENTA
+-- Mapea a: Cuenta.java PK numero_cuenta + FK cuenta.cliente_id -> cliente.cliente_id
 CREATE TABLE cuenta (
   numero_cuenta    VARCHAR(30)   PRIMARY KEY,
   tipo_cuenta      VARCHAR(30)   NOT NULL,
@@ -46,8 +46,8 @@ CREATE TABLE cuenta (
 
 CREATE INDEX idx_cuenta_cliente_id ON cuenta(cliente_id);
 
--- 4) MOVIMIENTO
--- Mapea a: Movimiento.java (IDENTITY) + FK movimiento.numero_cuenta -> cuenta.numero_cuenta
+-- 4. MOVIMIENTO
+-- Mapea a: Movimiento.java IDENTITY + FK movimiento.numero_cuenta -> cuenta.numero_cuenta
 CREATE TABLE movimiento (
   movimiento_id   BIGSERIAL PRIMARY KEY,
   fecha           DATE          NOT NULL,

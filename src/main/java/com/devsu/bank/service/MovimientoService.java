@@ -42,13 +42,13 @@ public class MovimientoService {
             case DEBITO -> debitoStrategy.apply(cuenta, req.valor(), hoy);
         };
 
-        // Guardamos el movimiento
+        // se guard el movimiento
         Movimiento saved = movimientoRepository.save(movimiento);
 
         cuenta.setSaldoDisponible(saved.getSaldo());
         cuentaRepository.save(cuenta);
 
-        // Convertimos Entity a DTO
+        // se convirte  Entity a DTO
         return new MovimientoResponse(
                 getMovimientoId(saved),
                 saved.getFecha(),

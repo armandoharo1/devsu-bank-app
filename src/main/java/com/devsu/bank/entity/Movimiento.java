@@ -32,7 +32,7 @@ public class Movimiento {
 
     @NotNull
     @Column(name = "valor", nullable = false, precision = 14, scale = 2)
-    private BigDecimal valor; // +credito, -debito (lo normalizaremos en servicio)
+    private BigDecimal valor; // + credito / - debito
 
     @NotNull
     @Column(name = "saldo", nullable = false, precision = 14, scale = 2)

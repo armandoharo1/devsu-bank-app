@@ -76,7 +76,6 @@ public class CuentaService {
                 c.getTipoCuenta(),
                 c.getSaldoInicial(),
                 c.getEstado(),
-                //c.getCliente().getPersonaId()
                 c.getCliente().getId()
         );
     }

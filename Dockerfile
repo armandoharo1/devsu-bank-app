@@ -2,11 +2,11 @@
 FROM maven:3.9.9-eclipse-temurin-17 AS build
 WORKDIR /app
 
-# Copiamos primero pom para cache
+# 1. Se copia primero pom para cache
 COPY pom.xml .
 RUN mvn -q -DskipTests dependency:go-offline
 
-# Copiamos el resto del proyecto y compilamos
+# 2. Luego, se copia el resto del proyecto y compilamos
 COPY src ./src
 RUN mvn -q -DskipTests clean package
 
@@ -14,7 +14,7 @@ RUN mvn -q -DskipTests clean package
 FROM eclipse-temurin:17-jre
 WORKDIR /app
 
-# Copiamos el jar generado (ajusta si tu artifactId/versión cambia)
+# 3. se copia el jar generado
 COPY --from=build /app/target/*.jar app.jar
 
 EXPOSE 8080
