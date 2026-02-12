@@ -275,5 +275,10 @@ Incluye:
 - Reportes (JSON / PDF Base64)
 
 
-## 🖥️ Frontend (Angular – Alcance Full-Stack
+# ✍️ Autor
+
+| **Armando Haro** | Data Engineer • Backend Developer |
+| :--- | :--- |
+| **Tech Stack** | Java • Spring Boot • Microservices • Kafka • Python •  Pyspark • Azure • Databricks • AWS • Datio • Collibra • Data Factory • SQL • DBT
+| **GitHub** | [github.com/armandoharo1](https://github.com/armandoharo1) |
 
